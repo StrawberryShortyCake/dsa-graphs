@@ -6,27 +6,25 @@ import { Queue } from "../common/queue";
 
 function fewestEdges(start: UGraphNodeStr, sought: UGraphNodeStr): number {
 
-  if (start === sought) return 0
+  if (start === sought) return 0;
 
-    const toVisit = new Queue([{node: start, depth:0}])
-    const visited: UGraphNodeStr[] = []
+  const toVisit = new Queue([{node: start, depth:0}]);
+  const visited: UGraphNodeStr[] = [];
 
-    while (!toVisit.isEmpty()){
-      const visitingNode = toVisit.dequeue()
+  while (!toVisit.isEmpty()){
+    const {node, depth} = toVisit.dequeue();
 
-      if (visitingNode.node.value === sought.value){
-        return visitingNode.depth
+    if (node.value === sought.value){
+      return depth;
+    }
+
+    for (const neighbor of node.adjacent){
+      if (!visited.includes(neighbor)){
+        toVisit.enqueue({node: neighbor, depth: depth+1});
+        visited.push(neighbor);
       }
-
-      for (const neighbor of visitingNode.node.adjacent){
-        if (!visited.includes(neighbor)){
-          toVisit.enqueue({node: neighbor, depth: visitingNode.depth+1})
-          visited.push(neighbor)
-        }
-      }
+    }
   }
-
-
   return Infinity;
 }
 
