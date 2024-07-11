@@ -43,6 +43,7 @@ class UGraphStr {
       const v1 = nodes[0]
       const v2 = nodes[1]
 
+      //FIXME: use addEdge here
       v1.adjacent.add(v2)
       v2.adjacent.add(v1)
     }
@@ -58,9 +59,10 @@ class UGraphStr {
   /** Remove node from graph. */
   removeNode(node: UGraphNodeStr): void {
     for (const adjacentNode of node.adjacent){
-      adjacentNode.adjacent.delete(node)
+      // adjacentNode.adjacent.delete(node)
+      this.removeEdge(adjacentNode, node)
     }
-    node.adjacent.clear()
+    // node.adjacent.clear()
     this.nodes.delete(node)
   }
 }
