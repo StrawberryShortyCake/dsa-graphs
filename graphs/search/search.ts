@@ -6,7 +6,16 @@ function rDfs(
     start: UGraphNodeStr,
     result: UGraphNodeStr[] = [],
     visited = new Set([start])): UGraphNodeStr[] {
-  return ["todo"];
+      result.push(start);
+
+      for (const node of start.adjacent) {
+        if (!visited.has(node)) {
+          visited.add(node);
+          rDfs(node, result, visited);
+        }
+      }
+
+  return result;
 }
 
 /** Return array of nodes, in DFS order (iterative version)  */
