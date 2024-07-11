@@ -1,3 +1,4 @@
+import { Queue } from "../common/queue";
 import { Stack } from "../common/stack";
 import { UGraphNodeStr } from "../graph/graph";
 
@@ -9,6 +10,7 @@ function rDfs(
     visited = new Set([start])): UGraphNodeStr[] {
       result.push(start);
 
+      //FIXME: 'node' typically called 'neighbor'
       for (const node of start.adjacent) {
         if (!visited.has(node)) {
           visited.add(node);
@@ -22,14 +24,12 @@ function rDfs(
 /** Return array of nodes, in DFS order (iterative version)  */
 
 function iDfs(start: UGraphNodeStr): UGraphNodeStr[] {
+  const result: UGraphNodeStr[] = []
+  const visited: UGraphNodeStr[] = []
+  const toVisit = new Stack([start])
 
-  let result: UGraphNodeStr[] = []
-  let visited: UGraphNodeStr[] = []
-  let toVisit = new Stack([start])
-
-  while (!toVisit.isEmpty){
+  while (!toVisit.isEmpty()){
     const nodeToVisit = toVisit.pop()
-
     if (!visited.includes(nodeToVisit)){
       result.push(nodeToVisit)
       visited.push(nodeToVisit)
@@ -37,7 +37,6 @@ function iDfs(start: UGraphNodeStr): UGraphNodeStr[] {
         toVisit.push(adjNode)
       }
     }
-
   }
 
   return result;
@@ -46,7 +45,24 @@ function iDfs(start: UGraphNodeStr): UGraphNodeStr[] {
 /** Return array of nodes, in BFS order (iterative version)  */
 
 function bfs(start: UGraphNodeStr): UGraphNodeStr[] {
-  return ["todo"];
+  const result: UGraphNodeStr[] = [];
+  //NOTE: could use a set for 'visited'
+  const visited: UGraphNodeStr[] = [];
+  const toVisit = new Queue([start]);
+
+  while (!toVisit.isEmpty()){
+    const nodeToVisit = toVisit.dequeue();
+
+    if (!visited.includes(nodeToVisit)){
+      result.push(nodeToVisit);
+      visited.push(nodeToVisit);
+      for (const adjNode of nodeToVisit.adjacent){
+        toVisit.enqueue(adjNode);
+      }
+    }
+  }
+
+  return result;
 }
 
 
